@@ -12,6 +12,7 @@ namespace BuildingMicroservices.Persistence.DbContexts
     {
         public BuildingDbContext(DbContextOptions<BuildingDbContext> options) : base(options) 
         {
+            //Database.EnsureDeleted();
             Database.Migrate();
         }
         public DbSet<Building> Buildings { get; set; }

@@ -13,6 +13,10 @@ namespace RoomMicroservices.Persistence.Repositories
     public class BuildingRepository : IBuildingRepository
     {
         private readonly RoomDbContext _dbContext;
+        public async Task<List<Building>> GetAllBuildingsAsyn()
+        {
+            return await _dbContext.Buildings.ToListAsync();
+        }
         public BuildingRepository(RoomDbContext dbContext)
         {
             _dbContext = dbContext;

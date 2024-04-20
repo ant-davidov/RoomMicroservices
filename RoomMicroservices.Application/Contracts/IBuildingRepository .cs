@@ -9,6 +9,7 @@ namespace RoomMicroservices.Application.Contracts
 {
     public interface IBuildingRepository
     {
+        public Task<List<Building>> GetAllBuildingsAsyn();
         public Task DeleteBuildingAsync(Building building);
         public Task<Building> GetByIdAsync(int id);
         public Task AddBuildingAsync(Building building);

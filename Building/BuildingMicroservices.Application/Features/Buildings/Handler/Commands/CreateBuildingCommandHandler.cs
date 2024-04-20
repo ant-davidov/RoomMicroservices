@@ -21,6 +21,7 @@ namespace BuildingMicroservices.Application.Features.Buildings.Handler.Commands
         private readonly IMapper _mapper;
         private readonly IBuildingRepository _buildingRepository;
         private readonly IPublishEndpoint _publishEndpoint;
+        private CancellationToken cancellationToken;
         public CreateBuildingCommandHandler(IMapper mapper, IBuildingRepository buildingRepository, IPublishEndpoint publishEndpoint)
         {
             _buildingRepository = buildingRepository;
@@ -35,10 +36,32 @@ namespace BuildingMicroservices.Application.Features.Buildings.Handler.Commands
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult);
             var building = _mapper.Map<Building>(request.Building);
-            await _buildingRepository.AddBuildingAsync(building);
-            var dto = _mapper.Map<BuildingDTO>(building);
-            await _publishEndpoint.Publish<CreateBuildingContract>(new CreateBuildingContract { Address= dto.Address, Id = dto.Id, Name = dto.Name, Floors = dto.Floors});
-            return dto;
+            if (await _buildingRepository.NameAlreadyExistsAsync(building.Name))
+                throw new ValidationException($"name already exists {building.Name}");
+
+            using var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            cancellationToken = cancellationTokenSource.Token;
+            using var transaction = _buildingRepository.CreateTransaction();
+            try
+            {
+                await _buildingRepository.AddBuildingAsync(building);
+                var dto = _mapper.Map<BuildingDTO>(building);
+                var publishTask = _publishEndpoint.Publish<CreateBuildingContract>(new CreateBuildingContract { Address = dto.Address, Id = dto.Id, Name = dto.Name, Floors = dto.Floors }, cancellationToken);
+                await publishTask;
+                transaction.Commit();
+                return dto;
+            }
+            catch (OperationCanceledException ex)
+            {
+                transaction.Rollback();
+                throw new ConflictException("tiomeout add rabbit");
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw;
+            }
+
         }
     }
 }

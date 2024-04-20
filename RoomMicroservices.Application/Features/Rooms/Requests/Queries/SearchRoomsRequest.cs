@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace RoomMicroservices.Application.Features.Rooms.Requests.Queries
 {
-    public class GetAllRoomsRequest : IRequest<List<RoomDTO>>
+    public class SearchRoomsRequest : IRequest<SearchRoomResponse>
     {
-        
+        public SearchRoomDTO SearchRoomDTO { get; set; }
     }
 }

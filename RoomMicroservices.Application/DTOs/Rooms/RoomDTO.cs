@@ -11,6 +11,7 @@ namespace RoomMicroservices.Application.DTOs.Rooms
     {
         public int Id { get; set; }
         public int BuildingId { get; set; }
+        public Building Building { get; set; }
         public string Name { get; set; }
         public RoomType Type { get; set; }
         public int Capacity { get; set; }

@@ -15,6 +15,7 @@ namespace RoomMicroservices.Application.Profiles
         public MappingProfile()
         {
             CreateMap<CreateBuildingDTO, Building>();
+            CreateMap<Building, BuildingDTO>();
 
             CreateMap<CreateRoomDTO, Room>();
             CreateMap<UpdateRoomDTO, Room>();

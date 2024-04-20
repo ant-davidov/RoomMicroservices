@@ -2,6 +2,7 @@
 using BuildingMicroservices.Domain;
 using BuildingMicroservices.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,15 @@ namespace BuildingMicroservices.Persistence.Repositories
     internal class BuildingRepository : IBuildingRepository
     {
         private readonly BuildingDbContext _dbContext;
+
         public BuildingRepository(BuildingDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public  async Task<bool> NameAlreadyExistsAsync(string name, int id = -1)
+        {
+           return await  _dbContext.Buildings.AnyAsync(x => x.Name == name && x.Id != id); 
         }
         public async Task<List<Building>> GetAllBuildingsAsync()
         {
@@ -47,5 +54,9 @@ namespace BuildingMicroservices.Persistence.Repositories
            
         }
 
+        public IDbContextTransaction CreateTransaction()
+        {
+            return _dbContext.Database.BeginTransaction();
+        }
     }
 }
