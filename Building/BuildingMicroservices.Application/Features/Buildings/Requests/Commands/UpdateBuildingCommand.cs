@@ -11,6 +11,6 @@ namespace BuildingMicroservices.Application.Features.Buildings.Requests.Commands
     public class UpdateBuildingCommand : IRequest<BuildingDTO>
     {
         public int Id { get; set; }
-        public CreateBuildingDTO BuildingDTO { get; set; }
+        public CreateBuildingDTO BuildingDTO { get; set; } = null!;
     }
 }

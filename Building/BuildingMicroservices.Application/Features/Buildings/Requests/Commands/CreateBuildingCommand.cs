@@ -10,6 +10,6 @@ namespace BuildingMicroservices.Application.Features.Buildings.Requests.Commands
 {
     public class CreateBuildingCommand : IRequest<BuildingDTO>
     {
-        public CreateBuildingDTO Building { get; set; }
+        public CreateBuildingDTO Building { get; set; } = null!;
     }
 }

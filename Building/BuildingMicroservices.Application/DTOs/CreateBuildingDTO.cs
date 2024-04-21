@@ -8,9 +8,9 @@ namespace BuildingMicroservices.Application.DTOs
 {
     public class CreateBuildingDTO
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
+        public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
         public int Floors { get; set; }
-        public string Other { get; set; }
+        public string? Other { get; set; }
     }
 }

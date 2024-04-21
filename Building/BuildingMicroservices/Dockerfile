@@ -1,21 +1,15 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 5036
+EXPOSE 5295
 
-ENV ASPNETCORE_URLS=http://+:5036
+ENV ASPNETCORE_URLS=http://+:5295
 
-ENV RABBITMQ_HOSTNAME=localhost \
-    RABBITMQ_VIRTUAL_HOST=/ \
-    RABBITMQ_USERNAME=guest \
-    RABBITMQ_PASSWORD=guest
-    
-ENV DefaultConnectionBuildingDb="Host=localhost; Port=5433; User Id=myuser; Password=mysecretpassword; Database=buildingDb;"
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM  mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Building/BuildingMicroservices/BuildingMicroservices.API.csproj", "Building/BuildingMicroservices/"]
 RUN dotnet restore "Building/BuildingMicroservices/BuildingMicroservices.API.csproj"

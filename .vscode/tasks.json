@@ -46,12 +46,12 @@
             "dockerBuild": {
                 "tag": "roommicroservices:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/RoomMicroservices/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Room/RoomMicroservices/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/RoomMicroservices/RoomMicroservices.API.csproj"
+                "appProject": "${workspaceFolder}/Room/RoomMicroservices/RoomMicroservices.API.csproj"
             }
         },
         {
@@ -62,7 +62,7 @@
             ],
             "dockerBuild": {
                 "tag": "roommicroservices:latest",
-                "dockerfile": "${workspaceFolder}/RoomMicroservices/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Room/RoomMicroservices/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {
                     "os": "linux",
@@ -71,7 +71,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/RoomMicroservices/RoomMicroservices.API.csproj"
+                "appProject": "${workspaceFolder}/Room/RoomMicroservices/RoomMicroservices.API.csproj"
             }
         },
         {
@@ -82,7 +82,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/RoomMicroservices/RoomMicroservices.API.csproj",
+                "appProject": "${workspaceFolder}/Room/RoomMicroservices/RoomMicroservices.API.csproj",
                 "enableDebugging": true
             }
         },
@@ -94,7 +94,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/RoomMicroservices/RoomMicroservices.API.csproj"
+                "appProject": "${workspaceFolder}/Room/RoomMicroservices/RoomMicroservices.API.csproj"
             }
         }
     ]

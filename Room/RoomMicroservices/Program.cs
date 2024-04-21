@@ -1,6 +1,8 @@
-using BuildingMicroservices.Persistence;
-using BuildingMicroservices.Application;
-using BuildingMicroservices.API.Middleware;
+using RoomMicroservices.Infrastructure;
+using RoomMicroservices.Persistence;
+using RoomMicroservices.Application;
+using RoomMicroservices.API.Middleware;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.ConfigurePersistenceServices(builder.Configuration, builder.Environment);
+builder.Services.ConfigureInfrastructureServices(builder.Configuration, builder.Environment);
+builder.Services.ConfigureApplicationServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.ConfigureApplicationServices(builder.Configuration, builder.Environment);
-builder.Services.ConfigurePersistenceServices(builder.Configuration, builder.Environment);
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddCors();
 var app = builder.Build();
 

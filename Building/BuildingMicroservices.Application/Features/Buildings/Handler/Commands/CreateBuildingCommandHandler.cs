@@ -21,7 +21,6 @@ namespace BuildingMicroservices.Application.Features.Buildings.Handler.Commands
         private readonly IMapper _mapper;
         private readonly IBuildingRepository _buildingRepository;
         private readonly IPublishEndpoint _publishEndpoint;
-        private CancellationToken cancellationToken;
         public CreateBuildingCommandHandler(IMapper mapper, IBuildingRepository buildingRepository, IPublishEndpoint publishEndpoint)
         {
             _buildingRepository = buildingRepository;

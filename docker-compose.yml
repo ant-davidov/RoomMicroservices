@@ -1,0 +1,84 @@
+version: '3.9'
+services:
+  
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+
+  database_room:
+    image: postgres:latest
+    volumes:
+      - /var/lib/postgresqlRoom/data/
+    container_name: database_room
+    environment:
+      - POSTGRES_DB=roomDb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    command: -p 5434
+
+
+  database_building:
+    image: postgres:latest
+    volumes:
+      - /var/lib/postgresqlBuilding/data/
+    container_name: database_building
+    environment:
+      - POSTGRES_DB=buildingDb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    command: -p 5435
+
+
+  room:
+    image: room:latest
+    ports:
+      - "8181:5290"
+    depends_on:
+      - database_room
+      - rabbitmq
+    container_name: room
+    environment:
+      - DockerConnectionRoomDb=user ID=user;Password=password;Host=database_room;Port=5434;Database=roomDb
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_VIRTUALHOST=/
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+
+
+  building:
+    image: building:latest
+    ports:
+      - "8182:5295"
+    depends_on:
+      - database_building
+      - rabbitmq
+    container_name: building
+    environment:
+      - DefaultConnectionBuildingDb=user ID=user;Password=password;Host=database_building;Port=5435;Database=buildingDb
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_VIRTUALHOST=/
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+
+  
+  testtask:
+    image: testtask:latest
+    ports:
+      - 80:80
+    container_name: testtask
+    environment:
+      - API_ROOM_URL= http://localhost:8181
+      - API_BUILDING_URL= http://localhost:8182
+    entrypoint: ["sh", "run.sh"]
+    
+
+  
+    
+
+    
+
+
+
