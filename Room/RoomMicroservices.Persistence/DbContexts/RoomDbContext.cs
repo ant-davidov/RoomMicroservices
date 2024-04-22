@@ -12,7 +12,7 @@ namespace RoomMicroservices.Persistence.DbContexts
     {
         public RoomDbContext(DbContextOptions<RoomDbContext> options) : base(options)
         {
-           // Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.Migrate();
         }
         public DbSet<Room> Rooms { get; set; }

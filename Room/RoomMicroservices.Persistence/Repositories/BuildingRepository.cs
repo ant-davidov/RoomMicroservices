@@ -15,7 +15,7 @@ namespace RoomMicroservices.Persistence.Repositories
         private readonly RoomDbContext _dbContext;
         public async Task<List<Building>> GetAllBuildingsAsyn()
         {
-            return await _dbContext.Buildings.ToListAsync();
+            return await _dbContext.Buildings.OrderBy(x=>x.Id).ToListAsync();
         }
         public BuildingRepository(RoomDbContext dbContext)
         {
